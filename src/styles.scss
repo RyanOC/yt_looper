@@ -1,0 +1,31 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.icon-bar {
+  display: flex;
+  background: #aeaeae;
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  height: 70px;
+}
+
+.icon-bar .active {
+    background: #2196F3;
+}
+
+.icon-bar a {
+    text-decoration: none;
+    color: white;/* icon should be white */
+    font-size: 36px;/* icons need to be larger */
+    width: 50%;/* each icon should cover 1/5th of the area */
+    text-align: center;/* Icons should be centered */
+    padding: 12px 0px;
+    transition: background 0.3s ease;
+}
+
+.icon-bar a:hover {
+   background: #2196F3;
+}
