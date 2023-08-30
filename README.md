@@ -1,7 +1,7 @@
 
 ## yt_looper - Summary
 
-<a href="https://stackblitz.com/github/ryanoc/yt_looper" target="_blank">Stackblitz Demo</a>
+<a href="https://ryanoc.github.io/yt_looper" target="_blank">Stackblitz Demo</a>
 
 The **yt_looper** is an Angular application designed to enhance user experience and efficiency when interacting with YouTube videos. By seamlessly integrating with the YouTube API, this application empowers users to automate the playback of videos through the utilization of up to 5 distinct loop segments. Each loop segment is defined by its individual start and end times, enabling users to focus on specific portions of the video content without manual intervention.
 
