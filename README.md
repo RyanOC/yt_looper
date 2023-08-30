@@ -1,53 +1,24 @@
-import { Component, ElementRef, HostListener, Renderer2, ViewChildren, QueryList } from '@angular/core';
 
-@Component({
-  selector: 'app-your-component',
-  template: `
-    <input type="text" [(ngModel)]="time.s" [value]="time.s" class="time-input">
-    <input type="text" [(ngModel)]="time.e" [value]="time.e" class="time-input">
-    <!-- Additional sets of text boxes -->
-    <input type="text" [(ngModel)]="time.x" [value]="time.x" class="time-input">
-    <input type="text" [(ngModel)]="time.y" [value]="time.y" class="time-input">
-  `
-})
-export class YourComponent {
-  @ViewChildren('timeInputs') timeInputs: QueryList<ElementRef<HTMLInputElement>>;
+## yt_looper - Summary
 
-  time = {
-    s: '',
-    e: '',
-    x: '',
-    y: ''
-  };
+The **yt_looper** is an Angular application designed to enhance user experience and efficiency when interacting with YouTube videos. By seamlessly integrating with the YouTube API, this application empowers users to automate the playback of videos through the utilization of up to 5 distinct loop segments. Each loop segment is defined by its individual start and end times, enabling users to focus on specific portions of the video content without manual intervention.
 
-  constructor(private elementRef: ElementRef, private renderer: Renderer2) {}
+## Key Features
 
-  ngAfterViewInit() {
-    this.timeInputs.forEach((input: ElementRef<HTMLInputElement>) => {
-      this.renderer.addClass(input.nativeElement, 'time-input-target');
-    });
-  }
+1. **YouTube API Integration:** The **yt_looper** seamlessly integrates with the YouTube API, providing direct access to video content and playback controls.
 
-  @HostListener('document:keydown', ['$event'])
-  handleKeyDown(event: KeyboardEvent) {
-    const keyCode = event.keyCode || event.which;
-    const arrow = { left: 37, up: 38, right: 39, down: 40 };
-    const activeElement = document.activeElement as HTMLElement;
+2. **Automated Loop Segments:** Users of the **yt_looper** can define and manage up to 5 different loop segments within a video. Each segment is characterized by a unique start and end time, allowing for precise repetition of specific content.
 
-    if (activeElement.classList.contains('time-input-target')) {
-      switch (keyCode) {
-        case arrow.up:
-          this.change(activeElement, 0.01);
-          break;
-        case arrow.down:
-          this.change(activeElement, -0.01);
-          break;
-      }
-    }
-  }
+3. **Enhanced Focus:** By automating loop segments, users can concentrate on crucial parts of a video, such as tutorials, lectures, or musical performances, without the need to manually rewind and replay.
 
-  change(input: HTMLInputElement, incAmount: number) {
-    const parts = input.value.split(':');
-    // Rest of the logic remains the same
-  }
-}
+4. **User-Friendly Interface:** The **yt_looper** boasts an intuitive and user-friendly interface that simplifies the process of setting loop segment parameters and managing playback options.
+
+5. **Time Efficiency:** With the ability to set multiple loop segments, users save time by avoiding repeated rewinding and searching for desired content manually.
+
+6. **Customizable Experience:** Users of the **yt_looper** have the freedom to tailor their viewing experience by selecting the number of loop segments they want to utilize, along with their respective start and end times.
+
+7. **Seamless Navigation:** The **yt_looper** ensures a seamless navigation experience, allowing users to switch between loop segments effortlessly.
+
+8. **Shareable Sessions:** The **yt_looper** enables users to save their configured loop segments as a session and generate a shareable URL. This URL allows users to easily share their defined loop segments with others.
+
+In essence, **yt_looper** leverages the capabilities of the YouTube API to offer users an innovative way to interact with video content. By providing automated loop segments with distinct start and end times, along with the ability to save and share sessions, it promotes efficient learning, entertainment, and engagement with videos, all while maintaining user control and customization.
