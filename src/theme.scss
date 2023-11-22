@@ -1,0 +1,105 @@
+
+@import '../node_modules/@angular/material/_theming';
+
+// Define your custom primary color palette
+$custom-primary-colors: (
+  50: #e2e2e2,  // Light grey, for lighter shades if needed
+  100: #b3b3b3, // Light grey, for lighter shades if needed
+  200: #808080, // Medium grey
+  300: #4d4d4d, // Medium dark grey
+  400: #262626, // Dark grey, for darker shades
+  500: #1a1a1a, // Very dark grey (or another color), used for default primary color
+  600: #141414, // Darker shade for hover states
+  700: #0f0f0f, // Darker shade, can be used for active states
+  800: #0a0a0a, // Even darker shade, less commonly used
+  900: #050505, // Very dark, for the darkest states
+  A100: #a4a4a4, // For lighter accent shades
+  A200: #8c8c8c, // For accent
+  A400: #737373, // For accent hover
+  A700: #595959, // For accent active
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #ffffff,
+    300: #ffffff,
+    400: #ffffff,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #000000,
+    A700: #000000,
+  )
+);
+
+// Create a palette for the custom primary color
+$custom-primary: mat-palette($custom-primary-colors, 500);
+
+// Define your custom accent color palette
+$custom-accent-colors: (
+  50: #e3f2fd,
+  100: #bbdefb,
+  200: #90caf9,
+  300: #64b5f6,
+  400: #42a5f5,
+  500: #2196f3, // Used for default accent color
+  600: #1e88e5,
+  700: #1976d2, // Use this or a darker shade for a dark theme
+  800: #1565c0,
+  900: #0d47a1,
+  A100: #82b1ff,
+  A200: #448aff,
+  A400: #2979ff,
+  A700: #2962ff,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #000000,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #000000,
+    A700: #000000,
+  )
+);
+
+// Create a palette for the custom accent color
+$custom-accent: mat-palette($custom-accent-colors, A700); // Dark shade for accent
+
+// Define a warn palette using a predefined palette
+$custom-warn: mat-palette($mat-red);
+
+// Define the dark theme
+$dark-theme: mat-dark-theme(
+  (
+    color: (
+      primary: $custom-primary,
+      accent: $custom-accent,
+      warn: $custom-warn,
+    )
+  )
+);
+
+// Include the core styles and theme
+@include mat-core();
+@include angular-material-theme($dark-theme);
+
+// Globally define the background and text color for the body
+body {
+  background: mat-color($custom-primary, 900); // Using the darkest shade
+  color: mat-color($custom-primary, 50); // Using a light shade for text
+}
+
+// You can also define styles for other selectors
+a, button {
+  color: mat-color($custom-accent, A200); // Using a light accent color for links and buttons
+}

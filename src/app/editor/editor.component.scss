@@ -1,42 +1,20 @@
 .main-content {
-  padding: 20px 20px 90px 20px;
-  max-width: 430px;
+  padding: 10px 10px 90px 10px;
+  //min-width: 430px;
+  //max-width: 430px;
+  width:390px;
 }
   
-body {
-  padding-top: 50px;
-  padding-bottom: 20px;
-}
+// If you have custom components, you can style them accordingly
+//.custom-component {
+  //background-color: #333;
+  //color: #e0e0e0;
+//}
 
-.time-input {
-  margin: 8px 0 0 20px;
-}
 
-/* http://astronautweb.co/snippet/font-awesome/ */
-.activeFont:before {
-  font-family: FontAwesome;
-  content: "\f00c";
-  display: inline-block;
-  padding-right: 3px;
-  vertical-align: middle;
-  position: absolute;
-  margin: 8px 0 0 0px;
-}
-
-.inactiveFont:before {
-  font-family: FontAwesome;
-  content: "\f10c";
-  display: inline-block;
-  padding-right: 3px;
-  vertical-align: middle;
-  position: absolute;
-  margin: 8px 0 0 0px;
-}
-
-#video_form {
-  margin: 0px 0 15px 0;
-  padding: 15px 0px 0px 15px;
-  background-color: rgb(225, 225, 225);
+.mat-mdc-raised-button:not(:disabled)
+{
+  background-color: #2196F3;
 }
 
 mat-form-field {
@@ -45,15 +23,33 @@ mat-form-field {
 }
 
 #currentTime{
-  width:220px;
+  width:207px;
   float:left;
   margin: 12px 0 0 10px;
 }
 
-#player-container {
-  margin: 10px 0 0 0 ;
-  padding: 15px 5px 15px 15px;
-  background-color: rgb(225, 225, 225);
+.video-container {
+  height:218px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 0 30px 0 ;
+  padding: 1px 1px 1px 1px;
+  background-color: rgb(57, 57, 57);
+}
+
+
+.youtube-container {
+  background-color: #848484; /* Your desired background color */
+  /* Additional styling as necessary */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.html5-video-player {
+  background-color: #dcdcdc !important;
 }
 
 #save_button{
@@ -64,27 +60,73 @@ mat-form-field {
 
 #save_container {
   margin: 10px 0 0 0 ;
-  padding: 15px 5px 15px 5px;
-  background-color: rgb(225, 225, 225);
+  //padding: 15px 5px 15px 5px;
+  //background-color: rgb(225, 225, 225);
 }
 
 #bit_selector_container {
-  background-color: rgb(225, 225, 225);
-  padding: 10px 10px 20px 20px;
-  margin:0 0 20px 0;
+  //background-color: rgb(225, 225, 225);
+  //padding: 10px 10px 20px 20px;
+  margin:0 0 20px 14px;
 }
 
-.stack-container {
-  display: flex;
-  justify-content: left;
-  align-items: flex-start;
+#bit_selector_title {
+  margin: 0 0 -5px 20px;
 }
 
-.stacked-elements {
-  display: flex;
-  flex-direction: column;
+/* http://astronautweb.co/snippet/font-awesome/ */
+.activeFont:before {
+  font-family: FontAwesome;
+  content: "\f00c";
+  display: inline-block;
+  padding-right: 3px;
+  vertical-align: middle;
+  position: absolute;
+  margin: 14px 0px 0px -6px;
+}
+
+.inactiveFont:before {
+  font-family: FontAwesome;
+  content: "\f10c";
+  display: inline-block;
+  padding-right: 3px;
+  vertical-align: middle;
+  position: absolute;
+  margin: 14px 0px 0px -6px;
+}
+
+.bit-time {
+  vertical-align: bottom;
+  margin: 0 0 6px 0;
+}
+
+.time-input {
+  margin: 8px 0 0 20px;
+  padding: 5px 0 4px 3px;
+  font-size: 16px;
+  height:20px;
+  width:163px;
+}
+
+/* styles.scss or your component's .scss */
+.responsive-container {
+  width: 100%; /* This can be omitted if the container should always be 100% */
+  box-sizing: border-box; /* Makes sure padding doesn't affect the total width */
+  margin: 0px 15px 0 0;
+  //padding: 15px 15px 0px 15px;
+  //background-color: rgb(225, 225, 225);
 }
 
 .stack-element {
-  margin: 0px;
+  width: 100%; /* It will take up 100% of .responsive-container's width */
+  max-width: 100%; /* Ensures it doesn't overflow its container */
+  box-sizing: border-box; /* Include padding and border in the element's width */
+}
+
+mat-form-field {
+  width: 100%; /* MatFormField will fill its .stack-element container */
+}
+
+.html5-video-player:not(.ytp-transparent), .html5-video-player.unstarted-mode, .html5-video-player.ad-showing, .html5-video-player.ended-mode{
+  background-color: aqua !important;
 }

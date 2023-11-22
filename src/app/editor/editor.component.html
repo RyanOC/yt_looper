@@ -1,52 +1,50 @@
 <!--span class="material-icons md-48" style="margin-top: 0px;">handyman</span-->
 <div class="main-content">   
     <div id="bit_selector_container">
-        <div>Times:</div>                  
-        <div *ngFor="let time of loop.times; let i = index;">                            
+        <div id="bit_selector_title">Times:</div>                  
+        <div class="bit-time" *ngFor="let time of loop.times; let i = index;">                            
             <div (click)="selectBit($event, time)" 
                 [class.activeFont]="time.selected === true" 
                 [class.inactiveFont]="time.selected === false">
             </div>
-            <input [id]="'time-input-start_' + i" type="text" [(ngModel)]="time.start" class="time-input">
-            <input [id]="'time-input-end_' + i" type="text" [(ngModel)]="time.end" class="time-input">                            
+            <input  class="time-input" [id]="'time-input-start_' + i" type="text" [(ngModel)]="time.start">
+            <input class="time-input" [id]="'time-input-end_' + i" type="text" [(ngModel)]="time.end">                            
         </div>
     </div>
-    <div id="video_form" class="stack-container">
-        <div class="stacked-elements">
-            <div class="stack-element">
-                <mat-form-field [color]="">
-                    <mat-label>Select Speed: </mat-label>
-                    <mat-select [(ngModel)]="selectedSpeedValue" 
-                        placeholder="1.0" 
-                        (ngModelChange)="onSpeedSelection()">
-                        <mat-option 
-                            *ngFor="let speed of speeds" 
-                            [value]="speed.value">
-                                {{speed.viewValue}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-            <div class="stack-element">
-                <mat-form-field>
-                    <mat-label>Video Id</mat-label>
-                    <input matInput [(ngModel)]="loop.videoId">
-                </mat-form-field>
-            </div>
-            <div class="stack-element">
-                <mat-form-field>
-                    <mat-label>Title</mat-label>
-                    <input matInput [(ngModel)]="loop.videoTitle">
-                </mat-form-field>
-            </div>
+    <div class="responsive-container">
+        <div class="stack-element">
+            <mat-form-field [color]="">
+                <mat-label>Select Speed: </mat-label>
+                <mat-select [(ngModel)]="selectedSpeedValue" 
+                    placeholder="1.0" 
+                    (ngModelChange)="onSpeedSelection()">
+                    <mat-option 
+                        *ngFor="let speed of speeds" 
+                        [value]="speed.value">
+                            {{speed.viewValue}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="stack-element">
+            <mat-form-field>
+                <mat-label>Video Id</mat-label>
+                <input matInput [(ngModel)]="loop.videoId">
+            </mat-form-field>
+        </div>
+        <div class="stack-element">
+            <mat-form-field>
+                <mat-label>Title</mat-label>
+                <input matInput [(ngModel)]="loop.videoTitle">
+            </mat-form-field>
         </div>
     </div>
-    <div id="player-container">
-        <div id="player"></div>
+    <div class="video-container">
+        <div id="player" class="youtube-container"></div>
     </div>
     <div id="save_container">                 
-        <div id="currentTime">Current Time: {{ currentTimeMessage$ | async }}</div>  
-        <mat-checkbox [(ngModel)]="isLoopChecked" color="primary">Loop</mat-checkbox> 
+        <div id="currentTime">Current Time: {{ currentTimeMessage$ | async }}</div> 
+        <mat-checkbox [(ngModel)]="isLoopChecked" class="custom-checkbox" color="primary">Loop</mat-checkbox> 
         <button (click)="save()" mat-raised-button color="primary" type="submit" class="button" id="save_button">Save</button>                  
     </div>  
 </div>

@@ -69,14 +69,16 @@ export class EditorComponent {
   ngOnInit() {
     document.title = Constants.DOC_TITLE_PREFIX + this.loop.videoTitle;
     this.editorService.loadStateFromHash(this.loop);
-    window.onYouTubeIframeAPIReady = () => {
+  
+    // If the YouTube API is already loaded, directly call the initialization function
+    if (window['YT'] && window['YT'].Player) {
       this.onYouTubePlayerAPIReady();
-    };  
-  }
-
-  ngOnDestroy(): void {
-    clearInterval(this.timeInterval); 
-    this.destroyPlayer();
+    } else {
+      // If the YouTube API is not loaded, set the callback which the YouTube IFrame player API will call
+      window.onYouTubeIframeAPIReady = () => {
+        this.onYouTubePlayerAPIReady();
+      };
+    }
   }
 
   ngAfterContentInit() {
@@ -95,18 +97,29 @@ export class EditorComponent {
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
   }
 
-  // player events
-  onYouTubePlayerAPIReady() : void {
-      // https://developers.google.com/youtube/iframe_api_reference
-      this.player = new _window.YT.Player('player', {
-          height: '250',
-          width: '400',
-          videoId: this.loop.videoId,
-          playerVars: { loop: 0, 'autoplay': 0, 'controls': 1, 'autohide':1, 'wmode':'opaque' },
-          events: {
-            'onReady': this.onPlayerReady.bind(this)
-        }
-      });
+  ngOnDestroy(): void {
+    clearInterval(this.timeInterval); 
+    this.destroyPlayer();
+  }
+
+  onYouTubePlayerAPIReady(): void {
+    this.player = new window.YT.Player('player', {
+      height: '100%',
+      width: '100%',
+      videoId: this.loop.videoId,
+      playerVars: { 
+        loop: 0, 
+        autoplay: 0, 
+        controls: 1, 
+        autohide: 1, 
+        wmode: 'opaque',
+        // Add the 'enablejsapi' parameter to enable the player's JavaScript API
+        enablejsapi: 1 
+      },
+      events: {
+        'onReady': this.onPlayerReady.bind(this)
+      }
+    });
   }
 
   onPlayerReady(e:any) {
@@ -252,6 +265,8 @@ export class EditorComponent {
     this.editorService.saveStateToHash(this.loop);
     this.selectBit(null, null);
   }
+
+
 
   // cleanup
   destroyPlayer(): void {

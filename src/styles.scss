@@ -1,35 +1,122 @@
 /* You can add global styles to this file, and also import other style files */
+@import './theme.scss';
 
 html, body { height: 100%; }
-body { 
+
+body {
   margin: 0; 
   background-color: #434343;
   font-family: Roboto, "Helvetica Neue", sans-serif; 
+  //padding-top: 50px;
+  padding-bottom: 0px;
+  background-color: #121212; /* Typical dark background */
+  color: #e0e0e0; /* Light text color for contrast */
 }
 
-.icon-bar {
-  display: flex;
-  background: #aeaeae;
-  position: fixed;
-  bottom: 0px;
-  width: 100%;
-  height: 70px;
+// Override specific elements if necessary
+a, p, h1, h2, h3, h4, h5, h6 {
+  color: #e0e0e0;
 }
 
-.icon-bar .active {
-    background: #2196F3;
+// Ensure inputs and other form elements have light text
+input, textarea, select, button {
+  color: #e0e0e0;
+  background-color: #424242; /* Darker element backgrounds */
+  border: 1px solid #636363; /* Slightly lighter border for visibility */
 }
 
-.icon-bar a {
-    text-decoration: none;
-    color: white;/* icon should be white */
-    font-size: 36px;/* icons need to be larger */
-    width: 50%;/* each icon should cover 1/5th of the area */
-    text-align: center;/* Icons should be centered */
-    padding: 12px 0px;
-    transition: background 0.3s ease;
+.hamburger {
+  z-index: 999;
+  cursor: pointer;
+  width: 30px; /* Width of the hamburger */
+  height: 20px; /* Height of the hamburger */
+  display: inline-block;
+  position: absolute; /* Position it at the top left */
+  top: 12px;
+  left: 15px;
 }
 
-.icon-bar a:hover {
-   background: #2196F3;
+.hamburger div {
+  height: 3px; /* Height of each bar */
+  background: #ddd; /* Color of the bars */
+  margin: 5px 0; /* Spacing between the bars */
+  transition: 0.4s;
+}
+
+.topnav {
+  position: absolute;
+  top:0;
+  left:0;
+  width:100%;
+  overflow: hidden;
+  text-align: center;
+  background-color: #424242;
+  padding: 15px 0 10px 0;
+  margin:0px 0px 0px 0px;
+  font-size: 20px;
+}
+
+.sidenav-container {
+  height: 100%;
+}
+
+mat-sidenav {
+  width: 200px; // Adjust as necessary
+  background: #333; // Dark background for the sidenav
+  color: #fff; // Light text for the sidenav
+}
+
+mat-sidenav-content {
+  padding: 0;
+}
+
+/* Style for the button that toggles the sidenav */
+button[mat-icon-button] {
+  margin: 0;
+}
+
+mat-sidenav-container, mat-sidenav-content, button[mat-icon-button] {
+  transition: transform 0.3s ease-in-out;
+}
+
+mat-sidenav.opened {
+  transform: translateX(0);
+}
+
+mat-sidenav.closed {
+  transform: translateX(-100%);
+}
+
+.sidenav-container {
+  .mat-drawer-side {
+    width: 250px;
+  }
+
+  mat-nav-list {
+    // Style for the navigation list container
+    width: 100%;
+    background-color: #424242; // Dark background color for the list
+    color: white;
+
+    .mat-list-item {
+      // Style for each list item
+      font-size: 1rem;
+      color: rgba(255, 255, 255, 0.87); // Light text color
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12); // Optional divider
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.1); // Slight highlight on hover
+      }
+
+      &.active {
+        background-color: #303030; // Different background for active link
+        color: #fff;
+      }
+    }
+  }
+}
+
+.mat-drawer-content {
+  background-color: #121212; // Dark background color for the main content
+  color: white;
 }

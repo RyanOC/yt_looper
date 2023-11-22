@@ -13,6 +13,9 @@ import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input'; 
 import { MatButtonModule } from '@angular/material/button';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
 
 @NgModule({
   declarations: [
@@ -30,7 +33,10 @@ import { MatGridListModule } from '@angular/material/grid-list';
     MatButtonModule,
     MatGridListModule,
     MatSelectModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatIconModule,
+    MatSidenavModule,
+    MatListModule
   ],
   providers: [YoutubePlayerService],
   bootstrap: [AppComponent]
