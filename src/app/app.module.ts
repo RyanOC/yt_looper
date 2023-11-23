@@ -1,3 +1,4 @@
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
@@ -36,7 +37,8 @@ import { MatListModule } from '@angular/material/list';
     MatCheckboxModule,
     MatIconModule,
     MatSidenavModule,
-    MatListModule
+    MatListModule,
+    HttpClientModule
   ],
   providers: [YoutubePlayerService],
   bootstrap: [AppComponent]
