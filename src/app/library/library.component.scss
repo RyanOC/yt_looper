@@ -1,24 +1,27 @@
 
 
 #library-container {
-    margin: 10px 0 0 0 ;
-    padding: 20px 20px 90px 20px;
-    color:white;
-  }
-
+  margin: 10px 0 0 0 ;
+  padding: 20px 20px 20px 20px;
+  color:white;
+}
 
 ul {
-    list-style-type: disc; /* You can change this to other list styles like 'circle', 'square', etc. */
-    color: white;
-    font-size: medium;
-  }
+  list-style-type: disc; /* You can change this to other list styles like 'circle', 'square', etc. */
+  color: white;
+  font-size: medium;
+}
 
-  ul li a {
-    color: white;
-    text-decoration: none; /* Remove underline from links */
-  }
+ul li {
+  margin: 0 0 15px -10px;
+}
 
-  /* Apply styles when links are hovered over */
-  ul li a:hover {
-    text-decoration: underline; /* Add underline on hover */
-  }
+ul li a {
+  color: white;
+  text-decoration: none; /* Remove underline from links */
+}
+
+/* Apply styles when links are hovered over */
+ul li a:hover {
+  text-decoration: underline; /* Add underline on hover */
+}

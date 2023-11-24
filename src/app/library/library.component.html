@@ -1,15 +1,8 @@
 <div id="library-container">
     <h2>Library</h2>
     <ul>
-        <li>
-            <a href="editor/#v=0fWTKslGOWY&t=Cult%20of%20Personality%20Guitar&&id=0&selected=true&start=0:00.00&end=0:02.79&&id=1&selected=false&start=0:58&end=1:02&&id=2&selected=false&start=0:00&end=0:00&&id=3&selected=false&start=0:00&end=0:00&&id=4&selected=false&start=0:00&end=0:00">
-                Living Color "Cult of Personality"
-            </a>
+        <li *ngFor="let video of videoLinks">
+            <a [href]="video.url">{{ video.title }}</a>
         </li>
     </ul>
-    <!-- <ul>
-        <li *ngFor="let link of videoLinks">
-        <a [href]="link" target="_blank">{{ link }}</a>
-        </li>
-    </ul> -->
 </div>

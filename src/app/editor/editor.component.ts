@@ -1,4 +1,4 @@
-import { Component, NgZone, ElementRef, HostListener,  ViewChildren, QueryList } from '@angular/core';
+import { Component, NgZone, ElementRef, HostListener,  ViewChildren, QueryList, OnDestroy, ViewChild } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import * as Interfaces from './../interfaces';
 import * as Constants from './../constants';
@@ -18,11 +18,13 @@ let _window: any = window;
   templateUrl: './editor.component.html',
   styleUrls: ['./editor.component.scss'],
 })
-export class EditorComponent {
+export class EditorComponent implements OnDestroy {
+  
 
   constructor(private ngZone: NgZone, private editorService: EditorService){}
 
   @ViewChildren('timeInputs') timeInputs: QueryList<ElementRef<HTMLInputElement>> | undefined;
+  @ViewChild('clearDiv') divToClear!: ElementRef;
 
   player: any;
   selectedSpeedValue: any = Constants.INIT_SELECTED_SPEED_VALUE;
@@ -61,6 +63,12 @@ export class EditorComponent {
           if(direction == "time-input-end") skipToEnd = true; //skip to end...
           this.startTimeManager(true, skipToEnd);
           break;
+        case 13: // enter key
+          if (activeElement.id.includes("time-input-end_")) {
+            // play the last few seconds to help perfect the loop...
+            if(direction == "time-input-end") skipToEnd = true;
+            this.startTimeManager(true, skipToEnd);
+          }
       }
     }
   }
@@ -98,8 +106,15 @@ export class EditorComponent {
   }
 
   ngOnDestroy(): void {
+    this.clearDivContent();
     clearInterval(this.timeInterval); 
     this.destroyPlayer();
+  }
+
+  private clearDivContent(): void {
+    if (this.divToClear && this.divToClear.nativeElement) {
+      this.divToClear.nativeElement.innerHTML = '';
+    }
   }
 
   onYouTubePlayerAPIReady(): void {
@@ -252,7 +267,7 @@ export class EditorComponent {
       }
 
       var minutes = Math.floor(currentTime / 60);
-      var seconds = currentTime % 60;
+      var seconds = (currentTime % 60).toFixed(2);
 
       return minutes + ":" + seconds;
   }
@@ -265,8 +280,6 @@ export class EditorComponent {
     this.editorService.saveStateToHash(this.loop);
     this.selectBit(null, null);
   }
-
-
 
   // cleanup
   destroyPlayer(): void {
