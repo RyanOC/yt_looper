@@ -14,13 +14,6 @@ declare global {
   }
 }
 
-let _window: any = window;
-
-interface VideoLink {
-  url: string;
-  title: string;
-}
-
 @Component({
   selector: 'app-editor',
   templateUrl: './editor.component.html',
@@ -28,7 +21,6 @@ interface VideoLink {
 })
 export class EditorComponent implements OnDestroy {
   
-
   constructor(private ngZone: NgZone, private editorService: EditorService, private http: HttpClient){}
 
   @ViewChildren('timeInputs') timeInputs: QueryList<ElementRef<HTMLInputElement>> | undefined;
@@ -46,12 +38,10 @@ export class EditorComponent implements OnDestroy {
   timeInterval: any;
   isLoopChecked: boolean = true;
   currentTimeMessage$: BehaviorSubject<string> = new BehaviorSubject<string>(Constants.INIT_TIME_MESSAGE);
-  formColor: string = "#fff";
-
   libraryData: any;
   loading: boolean = false;
   errorMessage: string = '';
-  videoLinks: VideoLink[] = [];
+  videoLinks: Interfaces.VideoLink[] = [];
 
 @HostListener('document:keydown', ['$event'])
   handleKeyDown(event: KeyboardEvent) {
@@ -88,19 +78,25 @@ export class EditorComponent implements OnDestroy {
 
   // lifecycle
   ngOnInit() {
-    // get library data, and use the first index as default...
-    this.getLibraryData().subscribe(
-      loopData => {
-        this.loop = loopData;
-        document.title = Constants.DOC_TITLE_PREFIX + loopData.videoTitle;
-        this.editorService.loadStateFromHash(loopData.times);
-      },
-      error => {
-        // Handle the error
-        console.error(error);
-      }
-    );  
-  
+    const parsedLoop = this.parseHashFromUrl();
+    if(!parsedLoop){ 
+      // get library data, and use the first index as default...
+      this.getLibraryData().subscribe(
+        loopData => {
+          this.loop = loopData;
+          document.title = Constants.DOC_TITLE_PREFIX + loopData.videoTitle;
+          this.editorService.loadStateFromHash(loopData);
+        },
+        error => {
+          console.error(error);
+        }
+      ); 
+    }
+    else{
+      this.loop = parsedLoop;
+      this.editorService.loadStateFromHash(parsedLoop);
+    }
+
     // If the YouTube API is already loaded, directly call the initialization function
     if (window['YT'] && window['YT'].Player) {
       this.onYouTubePlayerAPIReady();
@@ -293,6 +289,49 @@ export class EditorComponent implements OnDestroy {
       var seconds = (currentTime % 60).toFixed(2);
 
       return minutes + ":" + seconds;
+  }
+ 
+  parseHashFromUrl(): Interfaces.Loop | null {
+    const hash = window.location.hash;
+  
+    if (hash && hash.startsWith('#v=')) {
+      const hashParts = hash.slice(1).split('&&');
+      const videoIdPart = hashParts.shift(); // Get the first part for the video ID
+      const videoId = videoIdPart ? decodeURIComponent(videoIdPart.split('=')[1]) : '';
+  
+      // Parse the times
+      const times: Interfaces.Time[] = hashParts.map((part) => {
+        const keyValuePairs = part.split('&');
+        // Define the params object with an index signature
+        const params: Record<string, string> = keyValuePairs.reduce((acc, current) => {
+          const [key, value] = current.split('=');
+          if (key && value) {
+            acc[key] = decodeURIComponent(value);
+          }
+          return acc;
+        }, {} as Record<string, string>);
+  
+        // Now TypeScript knows that 'params' has an index signature
+        return {
+          id: parseInt(params['id'], 10),
+          selected: params['selected'] === 'true',
+          start: params['start'],
+          end: params['end']
+        };
+      });
+  
+      // Attempt to extract the video title from the hash
+      const videoTitle = decodeURIComponent(hash.split('&t=')[1].split('&')[0]);
+  
+      return {
+        videoId: videoId,
+        videoTitle: videoTitle,
+        times: times
+      };
+    } else {
+      console.log("The URL does not contain the expected hash format.");
+      return null;
+    }
   }
 
   getLibraryData(): Observable<Interfaces.Loop> {

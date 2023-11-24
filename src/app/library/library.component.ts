@@ -37,7 +37,7 @@ export class LibraryComponent implements OnInit {
             const titleMatch = params.match(/t=([^&]*)/);
             const title = titleMatch ? decodeURIComponent(titleMatch[1]) : 'Unknown Title';
             return {
-              url: `editor/#v=${videoId}&t=${encodeURIComponent(title)}&${params}`,
+              url: `editor#v=${videoId}&t=${encodeURIComponent(title)}&${params}`,
               title: title.trim() === '' ? 'Create New Loop' : title
             };
           });

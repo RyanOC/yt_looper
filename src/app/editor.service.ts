@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as Constants from './constants';
+import * as Interfaces from './interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -59,7 +60,7 @@ export class EditorService {
     return formattedValue;
   }
 
-  loadStateFromHash(loop:any){
+  loadStateFromHash(loop:Interfaces.Loop){
     var hash = window.location.hash.substr(1);
 
     if(hash != ''){
