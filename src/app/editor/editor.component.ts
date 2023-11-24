@@ -3,6 +3,9 @@ import { BehaviorSubject } from 'rxjs';
 import * as Interfaces from './../interfaces';
 import * as Constants from './../constants';
 import { EditorService } from './../editor.service'; 
+import { HttpClient } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { map, catchError, finalize } from 'rxjs/operators';
 
 declare global {
   interface Window {
@@ -13,6 +16,11 @@ declare global {
 
 let _window: any = window;
 
+interface VideoLink {
+  url: string;
+  title: string;
+}
+
 @Component({
   selector: 'app-editor',
   templateUrl: './editor.component.html',
@@ -21,7 +29,7 @@ let _window: any = window;
 export class EditorComponent implements OnDestroy {
   
 
-  constructor(private ngZone: NgZone, private editorService: EditorService){}
+  constructor(private ngZone: NgZone, private editorService: EditorService, private http: HttpClient){}
 
   @ViewChildren('timeInputs') timeInputs: QueryList<ElementRef<HTMLInputElement>> | undefined;
   @ViewChild('clearDiv') divToClear!: ElementRef;
@@ -39,6 +47,11 @@ export class EditorComponent implements OnDestroy {
   isLoopChecked: boolean = true;
   currentTimeMessage$: BehaviorSubject<string> = new BehaviorSubject<string>(Constants.INIT_TIME_MESSAGE);
   formColor: string = "#fff";
+
+  libraryData: any;
+  loading: boolean = false;
+  errorMessage: string = '';
+  videoLinks: VideoLink[] = [];
 
 @HostListener('document:keydown', ['$event'])
   handleKeyDown(event: KeyboardEvent) {
@@ -75,8 +88,18 @@ export class EditorComponent implements OnDestroy {
 
   // lifecycle
   ngOnInit() {
-    document.title = Constants.DOC_TITLE_PREFIX + this.loop.videoTitle;
-    this.editorService.loadStateFromHash(this.loop);
+    // get library data, and use the first index as default...
+    this.getLibraryData().subscribe(
+      loopData => {
+        this.loop = loopData;
+        document.title = Constants.DOC_TITLE_PREFIX + loopData.videoTitle;
+        this.editorService.loadStateFromHash(loopData.times);
+      },
+      error => {
+        // Handle the error
+        console.error(error);
+      }
+    );  
   
     // If the YouTube API is already loaded, directly call the initialization function
     if (window['YT'] && window['YT'].Player) {
@@ -270,6 +293,58 @@ export class EditorComponent implements OnDestroy {
       var seconds = (currentTime % 60).toFixed(2);
 
       return minutes + ":" + seconds;
+  }
+
+  getLibraryData(): Observable<Interfaces.Loop> {
+    this.loading = true;
+    const jsonUrl = 'https://raw.githubusercontent.com/RyanOC/yt_looper/main/src/data/library.json';
+
+    return this.http.get(jsonUrl).pipe(
+      map((response: any): Interfaces.Loop => {
+        if (response && response.library && Array.isArray(response.library) && response.library.length > 0) {
+          const firstVideoEntry = response.library[0]; // Get only the first item from the array
+          const videoId = Object.keys(firstVideoEntry)[0];
+          const paramsString = firstVideoEntry[videoId];
+          const titleMatch = paramsString.match(/t=([^&]*)/);
+          const videoTitle = titleMatch ? decodeURIComponent(titleMatch[1]) : 'Unknown Title';
+
+          // Extract times data
+          const timesData = paramsString.split('&&').slice(1); // split the params string by '&&' and ignore the first element which is the title
+          const times: Interfaces.Time[] = timesData.map((paramString: string) => {
+            const params = paramString.split('&').reduce((acc, current) => {
+              const [key, value] = current.split('=');
+              if (key && value) {
+                acc[key] = decodeURIComponent(value);
+              }
+              return acc;
+            }, {} as any);
+
+            // Convert params into Time object
+            return {
+              id: parseInt(params.id),
+              selected: params.selected === 'true',
+              start: params.start,
+              end: params.end
+            };
+          });
+
+          return {
+            videoId: videoId,
+            videoTitle: videoTitle.trim() === '' ? 'Create New Loop' : videoTitle,
+            times: times
+          };
+        } else {
+          throw new Error('Data is not in the expected format or the array is empty');
+        }
+      }),
+      catchError((error) => {
+        this.errorMessage = error.message || 'An error occurred while loading the library';
+        return throwError(() => error);
+      }),
+      finalize(() => {
+        this.loading = false;
+      })
+    );
   }
 
   // persistance

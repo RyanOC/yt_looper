@@ -1,5 +1,5 @@
 
-interface Time {
+export interface Time {
     id: number;
     selected: boolean;
     start: string;

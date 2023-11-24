@@ -28,13 +28,7 @@ export const SPEEDS: Interfaces.Speed[] = [
 ];
 
 export const INIT_LOOP: Interfaces.Loop = {
-    videoId: 'xswXwfDBDGM',
-    videoTitle: 'Classical Gas',
-    times: [
-      { id: 0, selected: true, start: '0:06.50', end: '0:13' },
-      { id: 1, selected: false, start: '0:58', end: '1:02' },
-      { id: 2, selected: false, start: '0:00', end: '0:00' },
-      { id: 3, selected: false, start: '0:00', end: '0:00' },
-      { id: 4, selected: false, start: '0:00', end: '0:00' },
-    ]
-  };
+  videoId: '',
+  videoTitle: '',
+  times: []
+};
